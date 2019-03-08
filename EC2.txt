@@ -1,0 +1,62 @@
+EC2 instance types:	
+FIGHTDRMCPX
+
+EC2 - EBS Volume Types:
+
+SSD:
+	GP2	(General Purpose SSD) - need lessthan 10K iops
+	IO1 (Provisioned IOPS SSD) - need greater than 10K iops
+
+HDD/Magnetic:
+	ST1 (Throughput Optimized Vol) - Used for Big Data/Data Warehouse/Log Processing (Cant use it for Boot Volume)
+	SC1 (Cold HDD) - Used for File Server or Infrequent Accessed Workloads. Low Cost STorage. Can NOT use it as boot volume
+	Standard (Magnetic Volume) - Lowest cost per GB of all EBS VOl Types. Its bootable. Used for InfrequentAccess storage. Old version of storage type.
+
+AMI -> InstanceType -> Configure Instance -> Add Storage -> Add Tags -> Configure Security Group -> Review
+
+AMI:			OS Image (Amazon Linux AMI, RedHat, Ubuntu, CentOS, Windows Server 2012 etc.)
+
+Instance Type:	FIGHTDRMCPX
+
+Configure Instance: No of VMs, VPC, Subnet, IP Assignment, IAM Role, Shutdown Behavior, Termination Protection, Shared/Dedicated, Spot, Monitoring (Cloud Watch), Advance details (Like scripts to be ran when system boots)
+
+Add Storage:
+Delete on Termination - Default behavior is "Yes", so when you terminate it will delete volume as well.
+As a Root volume:			General SSD, Provisoned IOPs, Magentic
+As an additional volume: 	All above + Cold HDD + Throughput Optimized HDD
+
+Tags:
+Add tags like Name of Machine, Department, Team, StaffID etc.
+
+Security Groups:
+This is a resource level security group to control access to EC2 instance from outside VPC or within VPC. Acts like Firewall at resource level when you add Rules like SSH, TCP, HTTPS, HTTP etc.
+
+Review:
+Review all information carefully and click Create
+
+You will be prompted to Create or Select a Key Pair.
+
+Can't Encrypt Root Volume when creating or launching an instance. However you can do that after provisioning.
+
+Change termination protection
+Status Checks:	System Status Vs Instance Status Checks
+
+Security Groups:
+	Its a Virtual Firewall
+	Each resource type can have multiple security groups
+	SG will help to control who can access your resources
+	SG are stateful means any inbound traffic will be automatically adds outbound traffic as well without any Outbound rules.
+	SGs are used only for allowing traffic but not for denying. By default everything inbound is denied and must use Inbound rules to allow traffic.
+	SG will allow outbound traffic by default
+	
+
+1 Create a Bucket for LifeCycle management
+2. Create a Life Cycle Rule
+
+
+Q:
+difference b/w current vs previous version of objects while creating a rule?
+
+What is CDN?
+CDN - Content Delivery Network
+Delivers content to users 

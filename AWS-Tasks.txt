@@ -1,0 +1,60 @@
+================================================================================================
+High Level Questions:
+================================================================================================
+What is the architecture of your environment?
+What tool do you use to automate infrastructure and what part of infrastructure is automated?
+
+================================================================================================
+Setting up Jenkins/Running Jenkins Builds:
+================================================================================================
+Setting up Jenkins:
+Setting up Maven:
+Setting up Java:
+Setting up Git:
+Configuring NOdes in Jenkins:
+Configuring Jobs in Jenkins (Pipeline):
+Troubleshooting Job issues in Jenkins:
+Setting up SCCM Pools in Jenkins for Auto Builds:
+Stage Artifact:
+Deploy Artifact:
+================================================================================================
+High Level Env Setups:
+================================================================================================
+Will use existing VPC:
+Will use existing IGW:
+Will use existing Route Table:
+Creating Subnets:
+Updating Route Tables:
+Setting up RDS on EC2:								
+Setting up MQ on EC2:
+Setting up SNS/SQS:	
+Setting up IAM Roles for EC2 -> S3/RDS/CloudWatch:
+Adding user/app ids to Groups: (DPL)
+Setting up Auto Scaling/Configuration for various environments:
+ELB Creation and Management:
+================================================================================================
+VM Creation:
+================================================================================================
+Capacity Management:								
+VM Name Generation:									
+VM Creation:										
+File System Creation/Mapping:								
+OS Load:
+================================================================================================
+Boot Loader Vs EFS??				
+================================================================================================				
+Loading Blue Print Scripts:							
+Installing Packages:								Splunk, WAS, MQ, DB Drivers etc.
+================================================================================================
+EC2 - App Setup:
+================================================================================================
+Importing Application Artifact:						
+Unpacking/UnArciving Artifact:						
+Running Blue Print Scripts:							
+Starting/Stopping/Restarting Application:			
+Setting up log storage using S3 & Cloud Watch:			
+Monitoring EC2 Instances:	
+Creating/Configuring Security Groups:
+Running or setting up tests:
+Clean up:
+================================================================================================

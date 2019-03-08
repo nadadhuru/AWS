@@ -1,0 +1,10 @@
+For each environment - we can have a different Auto Scaling Group with different launch configuration.
+
+For Auto Sclaing Group - we configure as follows:
+In Dev - we use only 1 Subnet/availability zone in SF
+In SYS - We use 2 Subnets/Availability Zones in SF
+
+1st step is to create a Launch Configuration with specifics such as Choosing AMI, Choose Instance Type, Configure Details (IAM Role, BootStrap script, IP Address Type), Add Storage, Configure Security Groups, Review etc.
+2nd step is to create a AutoScaling group with No of instances, Subnet, ELB, HealthCheckType, etc.
+
+309-262-2193

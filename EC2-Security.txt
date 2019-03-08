@@ -1,0 +1,23 @@
+To be honest, the video does a pretty poor job explaining it. It makes it seem like magic while it is pretty simple, because the underlying logic, that is fundamental for understanding it, is not explained at all.
+
+It is not really about inbound or outbound, it is about what type of traffic you want to allow/deny.
+
+Example, user wants to access the website that you are hosting on your EC2 instance. They make request (protocol HTTP, destination port 80), so you need to allow this type of traffic on inbound. Your instance then processes the request and is about to respond. The question is to which port? Answer, to the source port of the request. What was the source port of the request? Well, you can't really tell. Browser will choose some ephemeral port as a source port when sending the request. So on the outbound, you need to allow protocol 80, port - ephemeral ports.
+
+So it is not only destination port and protocol that you need to think about when designing NACLs, but also the source port of the request. Request's destination port will become response's source port, request's source ports will become response's destination port. They are swapped.
+
+Now imagine a scenario where your EC2 instance is origin of the request (downloading some patches from the Internet). So the destination port is 80, protocol HTTP, therefore on the outbound you need to allow it. But again, source port is picked from ephemeral range and response coming from the Internet to this request will swap source and destination ports of the request. Therefore the remote location will respond with protocol HTTP, port: some ephemeral port picked as the source port by your EC2 instance. So you need to allow protocol HTTP, port: ephemeral ports on inbound in this case. This is the same scenario as the above, it is just the other way around.
+
+As you can see, it is about the type of traffic, where to open ephemeral ports (inbound/outbound). If you have a web server that is responding to your clients' requests and at the same time it needs to download patches from time to time, then you will need to allow ephemeral ports for HTTP on both inbound and outbound.
+
+The same goes for your own resources that are communicating between each other (example would be web server talking to DB that sits in a different - private - subnet). This is the flow of the request/response.
+
+Client (sends request) => request (source port: pick some ephemeral, destination port: 80, protocol: HTTP) => web server (receives request from client / generates request for DB) => request (source port: pick some ephemeral, destination port: 3306, protocol: TCP) => DB (receives request from web server, generates response for web server) => response (source port: 3306, destination port: ephemeral port of the web server request, protocol: TCP) => web server (receives response from DB, generates response for client) => response (source port: 80, destination port: ephemeral port of client request)
+
+If you want to set up your NACLs, then model the traffic flow like this and the rest is just copying it to console. This only presents one type of traffic flowing through your system. Now you might want to have NAT instance for DB to download patches as well, so you need to repeat the above process, model the traffic flow of that type of request from subnet to subnet and update your NACL. You want your web server to download patches as well? You need to model the flow again.
+
+It may take some time to model each flow but it is not really hard, it just takes time to get used to it. And it is the only reliable way of how to correctly set up your NACL policies. And the only real way to debug it if something doesn't work, going step by step through your flow - from NACL to NACL - to see where you have made mistake.
+
+The same goes for Security groups as well. I have been talking about NACLs only, but you need to go step by step, configuring the SGs according to the flow as well.
+
+Hope it helps at least a little bit. The best thing you can do is to set up few configurations. Like those above, you can enhance it with ELB as well. Place all the components into different subnets and then, one by one, configure NACLs and SGs (model the flow and go one by one for each type of traffic separately, don't try to build the whole NACL policy at once), but be as strict as possible. You will eventually find it pretty easy/straightforward. 
